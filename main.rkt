@@ -11,7 +11,8 @@
          check-true
          check-false
          check-not-false
-         check-exn)
+         check-exn
+         display-test-results)
 
 ;; To do:
 ;; 1) don't use printf, use exceptions
