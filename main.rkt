@@ -10,7 +10,8 @@
          check-not-eq?
          check-true
          check-false
-         check-not-false)
+         check-not-false
+         check-exn)
 
 ;; To do:
 ;; 1) don't use printf, use exceptions
@@ -216,3 +217,27 @@
              "----------")]
            [else (test-passed!)]))]))
 
+
+;; check-exn
+(define-syntax (check-exn stx)
+  (syntax-parse stx
+    [(_ exn-pred thunk (~optional msg #:defaults ([msg #'#f])))
+     #'(let ([a-val (with-handlers ([exn-pred
+                                     (λ (_) (test-passed!)
+                                       (void))])
+                      (thunk 42))])
+         (cond
+           [a-val]
+           [else
+            (test-failed!)
+            (printf 
+             "~a\nFAILURE\nexptected exception\nactual: ~a\nexpression: ~a\ncontext:\n  ~a:~a:~a\n~a~a\n" 
+             "----------"
+             a-val
+             '(check-exn exn-pred thunk)
+             (syntax-source #'actual)
+             (syntax-line #'actual)
+             (syntax-column #'actual)
+             (let ([message msg])
+               (if message (string-append "Message: " message "\n") ""))
+             "----------")]))]))
