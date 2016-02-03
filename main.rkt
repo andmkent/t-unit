@@ -222,12 +222,12 @@
 (define-syntax (check-exn stx)
   (syntax-parse stx
     [(_ exn-pred thunk (~optional msg #:defaults ([msg #'#f])))
-     #'(let ([a-val (with-handlers ([exn-pred
-                                     (λ (_) (test-passed!)
-                                       (void))])
-                      (thunk 42))])
+     #'(let ([a-val (with-handlers ([exn-pred (λ (_) (void))])
+                      (thunk 42)
+                      #f)])
          (cond
-           [a-val]
+           [a-val
+            (test-passed!)]
            [else
             (test-failed!)
             (printf 
@@ -241,3 +241,4 @@
              (let ([message msg])
                (if message (string-append "Message: " message "\n") ""))
              "----------")]))]))
+
