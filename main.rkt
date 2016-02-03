@@ -15,7 +15,7 @@
 ;; To do:
 ;; 1) don't use printf, use exceptions
 ;; 2) write tests for these...
-;; 3) test suites
+;; 3) tie these in to rackunit framework...?
 
 (define passed-tests (make-parameter (box 0)))
 (define failed-tests (make-parameter (box 0)))
