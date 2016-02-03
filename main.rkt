@@ -223,7 +223,7 @@
   (syntax-parse stx
     [(_ exn-pred thunk (~optional msg #:defaults ([msg #'#f])))
      #'(let ([a-val (with-handlers ([exn-pred (λ (_) (void))])
-                      (thunk 42)
+                      (thunk)
                       #f)])
          (cond
            [a-val
